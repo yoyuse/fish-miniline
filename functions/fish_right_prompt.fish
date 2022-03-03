@@ -9,6 +9,10 @@ function fish_right_prompt
     set -l index_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f1)
     set -l wtree_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f2)
 
+    set -l upstream_stat (git status -sb 2>/dev/null | head -1)
+    set -l ahead (string match -r '\[ahead (\d+)' $upstream_stat | tail -1)
+    set -l behind (string match -r 'behind (\d+)\]' $upstream_stat | tail -1)
+
     set -l _git ""
     set -l flag ""
     set -l __color
@@ -17,6 +21,10 @@ function fish_right_prompt
         test -n "$index_stat" && set __color green && set flag $flag'~' # i
         test -n "$wtree_stat" && set __color red && set flag $flag'*' # w
         test -n "$untracked" && set __color magenta && set flag $flag'?' # u
+
+        test -n "$ahead" && set flag $flag'↑'$ahead
+        test -n "$behind" && set flag $flag'↓'$behind
+
         set _git " "$branch" "(set_color normal)
         test $flag && set _git (set_color $__fg)" "$flag" "$__arrow2$_git
         set _git (set_color $__color)$__arrow(set_color $__fg)(set_color -b $__color)$_git
