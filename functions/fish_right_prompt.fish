@@ -4,7 +4,7 @@ function fish_right_prompt
     set -l __fg black
 
     set -l branch (git symbolic-ref HEAD 2>/dev/null | cut -d/ -f3)
-    set -l git_stat (git status --porcelain 2>/dev/null)
+    set -l git_stat (git status --porcelain 2>/dev/null | string collect)
     set -l untracked (echo "$git_stat" | grep "??")
     set -l index_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f1)
     set -l wtree_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f2)
