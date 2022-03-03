@@ -14,9 +14,9 @@ function fish_right_prompt
     set -l __color
     if test -n "$branch"
         set __color blue
-        test -n "$index_stat" && set __color green && set flag {$flag}i
-        test -n "$wtree_stat" && set __color red && set flag {$flag}w
-        test -n "$untracked" && set __color magenta && set flag {$flag}u
+        test -n "$index_stat" && set __color green && set flag $flag'~' # i
+        test -n "$wtree_stat" && set __color red && set flag $flag'*' # w
+        test -n "$untracked" && set __color magenta && set flag $flag'?' # u
         set _git " "$branch" "(set_color normal)
         test $flag && set _git (set_color $__fg)" "$flag" "$__arrow2$_git
         set _git (set_color $__color)$__arrow(set_color $__fg)(set_color -b $__color)$_git
