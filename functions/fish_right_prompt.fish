@@ -8,7 +8,8 @@ function fish_right_prompt
     set -l untracked (echo "$git_stat" | grep "??")
     set -l index_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f1)
     set -l wtree_stat (echo "$git_stat" | grep -v "?" | cut -d" " -f2)
-
+    set -l index_stat (string join '' $index_stat)
+    set -l wtree_stat (string join '' $wtree_stat)
     set -l upstream_stat (git status -sb 2>/dev/null | head -1)
     set -l ahead (string match -r '\[ahead (\d+)' $upstream_stat | tail -1)
     set -l behind (string match -r 'behind (\d+)\]' $upstream_stat | tail -1)
