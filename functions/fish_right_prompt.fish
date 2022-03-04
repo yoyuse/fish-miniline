@@ -13,12 +13,14 @@ function fish_right_prompt
     set -l upstream_stat (git status -sb 2>/dev/null | head -1)
     set -l ahead (string match -r '\[ahead (\d+)' $upstream_stat | tail -1)
     set -l behind (string match -r 'behind (\d+)\]' $upstream_stat | tail -1)
+    set -l stash_stat (git stash list 2>/dev/null)
 
     set -l _git ""
     set -l flag ""
     set -l __color
     if test -n "$branch"
         set __color blue
+        test -n "$stash_stat" && set flag $flag'$'
         test -n "$index_stat" && set __color green && set flag $flag'~' # i
         test -n "$wtree_stat" && set __color red && set flag $flag'*' # w
         test -n "$untracked" && set __color magenta && set flag $flag'?' # u
